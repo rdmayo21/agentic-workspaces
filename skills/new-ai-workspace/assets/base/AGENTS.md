@@ -19,6 +19,9 @@ files are not.
 
 - `CONTEXT.md` — background, goals, constraints, key people/accounts
 - `DECISIONS.md` — settled choices with rationale (append-only; never rewrite history)
+- `EXPERIMENTS.md` — pre-registered tests against reality: criteria written
+  BEFORE running, resolved with what the outcome is evidence of (may stay
+  empty until the project makes its first falsifiable bet)
 - `RESEARCH.md` — findings with source links and retrieval dates
 - `archive/` — superseded material (move it here, don't delete it)
 
@@ -28,6 +31,10 @@ After any meaningful work:
 
 1. Update `STATUS.md` (including its "Last updated" date) and `NEXT-ACTIONS.md`.
    STATUS.md is a capped snapshot — overwrite fully; history goes in DECISIONS.md.
+   Keep STATUS under ~8 KB — every session re-reads it at startup, so bloat here
+   is a per-session tax. If dated session entries have accumulated, relocate
+   them wholesale to `archive/status-log-YYYY-MM.md` as part of the
+   end-of-session sweep (rule 8).
 2. Record newly settled choices in `DECISIONS.md` with the date and the why
    (headed sections: `### YYYY-MM-DD — title`, Decision / Rationale / Outcome).
 3. Preserve source links and retrieval dates in `RESEARCH.md`.
@@ -42,6 +49,22 @@ After any meaningful work:
    ~50 KB, split it (by year or topic) into a `log/` file and leave a pointer —
    relocate entries wholesale, never rewrite them. A state file too big to read
    in one pass breaks the read-first rule exactly when it matters most.
+8. **End-of-session sweep.** Before ending a session, tidy the workspace:
+   dated one-off files (session deliverables, analyses, packets) whose content
+   has been absorbed into the state files move to `archive/`; any state file
+   not listed in the file map gets added to it (or folded into an existing
+   file); generated artifacts (`__pycache__`, caches, temp files) get deleted.
+   Update pointers to anything moved. Archive-only — never delete content, and
+   nothing beyond this mechanical sweep without the user's go; restructuring
+   the file layout is a decision, not hygiene.
+9. **Pre-register experiments.** Any test whose outcome will steer the
+   project — an outreach, an offer, a protocol change, a dated prediction —
+   gets an `EXPERIMENTS.md` entry with success criteria AND what a null
+   would mean, written before it runs. When the result lands, resolve the
+   entry: what happened, and what the outcome is evidence OF (an experiment
+   that never ran says something about the operator, not the hypothesis).
+   Entries past their window unresolved are the first thing to surface next
+   session, not clutter.
 
 Always distinguish four levels of certainty: **confirmed** (booked/executed),
 **decided** (settled, not yet executed), **tentative** (leading option), and

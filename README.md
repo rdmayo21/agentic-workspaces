@@ -38,6 +38,9 @@ state.**
    - `STATUS.md` — where things stand (capped snapshot, always current)
    - `NEXT-ACTIONS.md` — prioritized, checkable actions
    - `DECISIONS.md` — append-only settled choices *with rationale*
+   - `EXPERIMENTS.md` — pre-registered tests against reality: success criteria
+     (and what a null would mean) written *before* running, every entry
+     resolved with what the outcome is evidence of
    - `RESEARCH.md` — findings with sources and retrieval dates
    - `CONTEXT.md` — goals, constraints, people
 4. **Certainty levels.** Agents must distinguish **confirmed / decided /
@@ -93,6 +96,9 @@ templates under `assets/`. No code changes.
 ## Design rules worth stealing even without the code
 
 - Append-only decision logs with the *why*, because future sessions can't ask.
+- Pre-register experiments: criteria and what-a-null-means written before the
+  test runs, so results can't bend the bar they're measured against — and an
+  experiment that never ran is evidence about the operator, not the hypothesis.
 - STATUS.md is overwritten, DECISIONS.md never is.
 - Archive, don't delete — superseded material moves to `archive/`.
 - Re-verify anything that can go stale (prices, dates, availability) before
@@ -113,7 +119,7 @@ templates under `assets/`. No code changes.
 │   └── <project>/SKILL.md        # thin per-project skills
 └── <project>/                    # one directory per ongoing project
     ├── AGENTS.md  STATUS.md  CONTEXT.md  DECISIONS.md
-    ├── RESEARCH.md  NEXT-ACTIONS.md  [type files]
+    ├── EXPERIMENTS.md  RESEARCH.md  NEXT-ACTIONS.md  [type files]
     ├── inbox/                    # staged captures (not yet accepted)
     └── archive/                  # superseded, never deleted
 ```

@@ -96,6 +96,7 @@ you can see.
     ├── STATUS.md             # current state + last-updated date
     ├── CONTEXT.md            # goals, constraints, background
     ├── DECISIONS.md          # append-only settled choices + rationale
+    ├── EXPERIMENTS.md        # pre-registered tests, resolved against reality
     ├── RESEARCH.md           # findings with sources + retrieval dates
     ├── NEXT-ACTIONS.md       # prioritized todo
     ├── <type-specific>.md    # e.g. ITINERARY.md, INVESTMENT-THESIS.md

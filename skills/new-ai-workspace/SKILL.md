@@ -47,11 +47,11 @@ Types (each adds a few files on top of the base set):
 - `general` — base files only (default; when in doubt, start here)
 - `travel` — ITINERARY, LODGING, BOOKINGS
 - `research` — QUESTIONS, FINDINGS
-- `business` — THESIS, CUSTOMERS, EXPERIMENTS
+- `business` — THESIS, CUSTOMERS
 - `investing` — INVESTMENT-THESIS, EVIDENCE, RISKS, WATCHLIST
 
 Base set (always): AGENTS.md, STATUS.md, CONTEXT.md, DECISIONS.md,
-RESEARCH.md, NEXT-ACTIONS.md, archive/.
+EXPERIMENTS.md, RESEARCH.md, NEXT-ACTIONS.md, archive/.
 
 Start minimal. Add `--extra FILE` only for files the idea clearly needs on
 day one — fifteen empty files is ceremony, not value. New files can always
