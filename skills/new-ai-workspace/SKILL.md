@@ -71,8 +71,9 @@ Write the `--skill-description` yourself, carefully — it is the ONLY thing
 Claude Code and Codex see when deciding whether to load the project skill.
 Make it pushy and concrete: what the workspace is, the specific nouns and
 phrases that should trigger it (places, tickers, company names, "where are
-we on X"), and end with "Invoke with /<name>." Look at `assets/project-skill-template.md` and the example in the repo's
-`examples/` directory for the style that works.
+we on X"), and end with "Invoke with /<name>." Look at
+`assets/project-skill-template.md` and the repo's
+`examples/skills/tokyo-trip/SKILL.md` for the style that works.
 
 The script refuses to overwrite anything that exists, normalizes the name,
 validates the generated SKILL.md, creates relative symlinks, and registers
@@ -100,6 +101,7 @@ when their next session starts.
 python3 ~/.ai/skills/new-ai-workspace/scripts/workspace.py list
 python3 ~/.ai/skills/new-ai-workspace/scripts/workspace.py archive <name>
 python3 ~/.ai/skills/new-ai-workspace/scripts/workspace.py repair <name>
+python3 ~/.ai/skills/new-ai-workspace/scripts/workspace.py adopt <name> --type <type> --description "..."
 python3 ~/.ai/skills/new-ai-workspace/scripts/workspace.py delete <name> --yes
 ```
 
@@ -108,6 +110,10 @@ python3 ~/.ai/skills/new-ai-workspace/scripts/workspace.py delete <name> --yes
   preserved in the workspace's `archive/`. Reversible via `repair`.
 - `repair` restores anything missing (base files, SKILL.md, symlinks) and
   reactivates archived workspaces. Never overwrites existing content.
+- `adopt` migrates a pre-existing project into the system without touching
+  its files: place the files at `~/ai-workspaces/<name>/` and a SKILL.md at
+  `~/.ai/skills/<name>/` first; adopt validates, symlinks, and registers
+  them (with `managed: false`, so repair skips base-file restoration).
 - `delete` permanently removes workspace + skill + links + registry entry.
   Destructive — confirm with the user before running, always.
 

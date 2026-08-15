@@ -55,10 +55,11 @@ markdown item per capture with provenance frontmatter (`captured`, `type`,
 
 Entry points, all writing the same format:
 
-- **Phone share sheet** (optional companion hub app) → an optional companion hub app (not included in this repo) can act as an Android share target: share any
-  page/photo/file/text → "Claude Code" → tap a workspace (keyword-ranked)
-  or "Inbox — decide later". The server syncs right after; originals and
-  URL text-extracts are preserved at capture time.
+- **Phone share sheet** — an optional companion hub app (not included in
+  this repo) can act as an Android share target: share any
+  page/photo/file/text → tap a workspace (keyword-ranked) or "Inbox —
+  decide later". The server syncs right after; originals and URL
+  text-extracts are preserved at capture time.
 - **Mac CLI**: `python3 …/scripts/capture.py add --ws tokyo-trip
   --text "…" | --url … | --file … [--sync]`; `--text -` reads stdin
   (`pbpaste | capture.py add --text - --ws x`).
@@ -69,15 +70,14 @@ Entry points, all writing the same format:
 - **URL captures** fetch a readable text extract at capture time (the page
   may die; the capture won't). The original URL stays in `url:`.
 
-Hub surfacing: workspace rows badge pending inbox counts; per-workspace
-"Process inbox" and global "triage" buttons prefill the incorporation
-prompts. Nothing auto-edits state files — acceptance is always a session
-you can see.
-- Privacy: the remote is private; access control is the GitHub account.
-  Credentials, tokens, SSNs, and account numbers never go in workspace
-  files (sync.py enforces a tripwire; the rule comes first). Original
-  sensitive documents (tax returns, IDs) stay in their dedicated stores —
-  workspaces hold summaries and pointers.
+Whatever the entry point, nothing auto-edits state files — acceptance is
+always a session you can see.
+
+Privacy: the remote is private; access control is the GitHub account.
+Credentials, tokens, SSNs, and account numbers never go in workspace
+files (sync.py enforces a tripwire; the rule comes first). Original
+sensitive documents (tax returns, IDs) stay in their dedicated stores —
+workspaces hold summaries and pointers.
 
 ## Filesystem layout
 
@@ -91,6 +91,8 @@ you can see.
 ├── skills/                   # canonical skills (real home)
 │   ├── new-ai-workspace/     # this skill: SKILL.md, scripts/, assets/
 │   └── <name>/SKILL.md       # each project skill
+├── capture/inbox/            # unsorted captures ("decide later")
+├── media/                    # binary payloads: media/<name>/, media/_unsorted/
 └── <name>/                   # one workspace per project
     ├── AGENTS.md             # conventions; Codex also auto-reads this name
     ├── STATUS.md             # current state + last-updated date
@@ -100,6 +102,7 @@ you can see.
     ├── RESEARCH.md           # findings with sources + retrieval dates
     ├── NEXT-ACTIONS.md       # prioritized todo
     ├── <type-specific>.md    # e.g. ITINERARY.md, INVESTMENT-THESIS.md
+    ├── inbox/                # staged captures, not yet accepted
     └── archive/              # superseded material; also holds SKILL.md
                               # backup when the workspace is archived
 
@@ -149,7 +152,7 @@ workspace at generation time — no ceremony required to maintain it.
 ## Rules the scripts enforce (don't work around them)
 
 - Names: `^[a-z][a-z0-9-]{1,49}$`, auto-normalized from free text;
-  `skills`, `archived`, `new-ai-workspace` are reserved.
+  `skills`, `archived`, `capture`, `media`, `new-ai-workspace` are reserved.
 - `create` refuses if the workspace dir, skill dir, or a foreign skill of
   the same name exists anywhere it would write.
 - Existing files are never overwritten — not by create, not by repair.

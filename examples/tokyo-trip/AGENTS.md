@@ -23,6 +23,9 @@ files are not.
   BEFORE running, resolved with what the outcome is evidence of (may stay
   empty until the project makes its first falsifiable bet)
 - `RESEARCH.md` — findings with source links and retrieval dates
+- `BOOKINGS.md` — one home for every booking fact (confirmations, deadlines)
+- `ITINERARY.md` — day-by-day plan with certainty markers
+- `LODGING.md` — lodging options and the current pick
 - `archive/` — superseded material (move it here, don't delete it)
 
 ## Update discipline

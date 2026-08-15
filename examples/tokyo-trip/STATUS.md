@@ -6,7 +6,7 @@ _Last updated: 2027-01-14_
 
 - **CONFIRMED:** outbound UA 837 SFO→NRT Apr 3, return Apr 15 (conf #KX8Q2R —
   full details in BOOKINGS.md, the one home for booking facts).
-- **Decided, not booked:** Hotel Niwa (Chiyoda) for all 12 nights — see
+- **Decided, not booked:** Hotel Niwa (Chiyoda) for all 11 nights — see
   DECISIONS.md 2027-01-12 for why over the Shinjuku options. Book by Jan 31;
   refundable rate ends then.
 - **Tentative:** day-split of Kyoto side trip (2 nights vs day trip) — leaning

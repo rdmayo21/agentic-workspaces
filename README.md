@@ -11,9 +11,9 @@ Codex, Gemini CLI, or whatever ships next year) reads at the start of a session
 and updates at the end. The files are the memory. The repo is the asset. The
 agents are interchangeable.
 
-This is not a framework or a database. It is a set of conventions, five
-markdown templates, and ~1,500 lines of dependency-free Python that enforce the
-conventions identically every time.
+This is not a framework or a database. It is a set of conventions, a directory
+of markdown templates, and ~1,500 lines of dependency-free Python that enforce
+the conventions identically every time.
 
 ## Why this exists
 
@@ -84,7 +84,7 @@ humans do.
 
 | Command | What it does |
 |---|---|
-| `workspace.py create/list/archive/repair/delete` | All filesystem mechanics: dirs, templates, registry, symlinks, validation. Never overwrites existing content. |
+| `workspace.py create/list/archive/repair/adopt/delete` | All filesystem mechanics: dirs, templates, registry, symlinks, validation. Never overwrites existing content. `adopt` registers a pre-existing project without touching its files. |
 | `workspace.py bootstrap` | Regenerates all machine wiring from the repo on a new machine. |
 | `sync.py now / status / install-autosync` | Commit + rebase + push, backup status, launchd autosync (macOS). Secret tripwire. Conflict rescue branches. Local git-bundle backups. |
 | `capture.py add` | Files emails/links/photos/notes into a workspace `inbox/` with provenance frontmatter — staged until a session incorporates them. |
@@ -125,7 +125,7 @@ templates under `assets/`. No code changes.
 ```
 
 See `skills/new-ai-workspace/references/workspace-conventions.md` for the full
-conventions, and `examples/` for a filled-in workspace.
+conventions, and `examples/` for a filled-in workspace and its project skill.
 
 ## Requirements
 
