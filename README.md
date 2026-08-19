@@ -24,6 +24,27 @@ from a clean laptop in minutes. It is published here because the pattern
 generalizes: **the durable asset in agentic work is not the agent, it's the
 state.**
 
+## What's verified and what isn't (as of August 2026)
+
+The system's own claims, graded the way it grades facts: **confirmed** =
+observed in daily production; **N=1** = true here, one operator,
+generalization untested; **aspirational** = designed for, not yet
+demonstrated.
+
+| Claim | Status | Evidence |
+|---|---|---|
+| Daily production use across many concurrent workspaces | Confirmed | Continuous use since 2025; double-digit active workspaces synced across machines |
+| State survives any conversation, session, or machine dying | Confirmed | Sessions killed mid-task resume from files; clean-laptop restore exercised |
+| Provider-neutral in practice | Partially verified | Two providers verified — the daily driver, plus a second vendor's agent passing a cold-start read/write test on a live workspace; a third blocked at account setup, untested |
+| Conventions prevent state rot | N=1 | One operator, one year; the system has caught and corrected its own agents' rule violations (dated entries in its design log) |
+| A future agent can be pointed at the repo cold | Aspirational | Self-describing by design; never tested against an agent that didn't exist when the conventions were written |
+
+**Strongest argument against this design:** every rule the tooling doesn't
+enforce is prose an agent can skip — and most rules here are prose. The bet
+is that small file maps and per-session re-reading keep discipline cheaper
+than enforcement machinery. That bet is validated at one operator's scale,
+not beyond it.
+
 ## The core ideas
 
 1. **Files over conversations.** Everything known and decided about a project

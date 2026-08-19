@@ -1,0 +1,21 @@
+# Agentic Workspaces
+
+> Persistent, provider-neutral memory for AI agents: one git repo of markdown
+> files that outlives every conversation. Conventions, templates, and ~1,500
+> lines of dependency-free Python. The durable asset in agentic work is not
+> the agent, it's the state.
+
+## Docs
+
+- [README](https://github.com/rdmayo21/agentic-workspaces/blob/main/README.md): core ideas, quickstart, what's verified, design rules worth stealing
+- [Workspace conventions](https://github.com/rdmayo21/agentic-workspaces/blob/main/skills/new-ai-workspace/references/workspace-conventions.md): the full file grammar and update discipline
+- [System skill](https://github.com/rdmayo21/agentic-workspaces/blob/main/skills/new-ai-workspace/SKILL.md): how agents operate the system
+- [Examples](https://github.com/rdmayo21/agentic-workspaces/tree/main/examples): a filled-in workspace and its project skill
+
+## Key ideas
+
+- Files over conversations: any session can be killed without losing state
+- Provider-neutral: Claude Code, Codex, and Gemini CLI read the same files
+- Append-only decision logs with rationale; pre-registered experiments
+- Four certainty levels: confirmed / decided / tentative / unreviewed idea
+- One home per fact; archive, don't delete; re-verify anything stale
