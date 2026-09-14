@@ -10,9 +10,9 @@ accepted state only when a session incorporates it (see the "Inbox" section
 of each workspace's AGENTS.md).
 
 Used three ways:
-  - CLI on the Mac:      capture.py add --ws tokyo-trip --text "..." [--sync]
-  - the phone hub:       an optional companion hub server (not included) imports capture_add() for share-sheet
-    captures (Android Web Share Target)
+  - CLI on the Mac:      capture.py add --ws lisbon-trip --text "..." [--sync]
+  - a phone hub:         an optional companion server (not included) can import
+    capture_add() for share-sheet captures (Android Web Share Target)
   - any agent session:   same CLI, e.g. when snapshotting an email
 
 Stdlib only — must run under plain python3 from any agent, no venv needed.
@@ -210,6 +210,14 @@ def capture_add(
     inbox_dir = (REPO / workspace / "inbox") if workspace else UNSORTED_DIR
     inbox_dir.mkdir(parents=True, exist_ok=True)
     item = inbox_dir / f"{stamp}_{slugify(title)}.md"
+    # Batch callers can write many items in the same second with identical
+    # slugs; never silently overwrite a prior item.
+    if item.exists():
+        base = f"{stamp}_{slugify(title)}"
+        counter = 2
+        while item.exists():
+            item = inbox_dir / f"{base}-{counter}.md"
+            counter += 1
 
     kind = "file" if media_ref else ("url" if url else "text")
     front = _frontmatter(

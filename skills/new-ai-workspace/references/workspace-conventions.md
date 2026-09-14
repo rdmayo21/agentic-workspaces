@@ -9,99 +9,121 @@ details beyond what SKILL.md covers.
    (lives wherever skills live; not this system's concern).
 2. **Persistent project workspace** — "here is everything known and decided
    about this particular undertaking" (`~/ai-workspaces/<name>/`).
-3. **Project skill** — the globally available interface to that workspace
-   (`~/.ai/skills/<name>/SKILL.md`, exposed to each provider).
+3. **Pointer skill** — the globally available entry point to that workspace
+   (`~/.ai/skills/<name>/SKILL.md`, exposed to each provider). A few lines:
+   where the workspace is, what to read first, what to do after.
 
 The workspace is primary; the skill is a disposable pointer. Archiving
 deletes the pointer and keeps the workspace.
 
+## The file set and what each file is for
+
+| Path | Role | How it changes |
+|---|---|---|
+| `AGENTS.md` | how the assistant should work here: what the project is, read order, file map, update discipline, standing rules | rarely; changes are decisions |
+| `STATUS.md` | where things stand right now, with a "Last updated" line | overwritten fully every session that changes anything |
+| `NEXT-ACTIONS.md` | what needs doing — Now (max 3) / Waiting on / Parked | edited in place; done items leave |
+| `DECISIONS.md` | what was decided and why, dated | append-only; supersede, never rewrite |
+| `RESEARCH.md` | findings with sources and retrieval dates | append-only |
+| `references/` | source documents the project relies on | added, never edited |
+| `inbox/` | staged captures — not accepted state | processed at session start, then emptied |
+| `archive/` | superseded material | grows; nothing is deleted |
+
+Type overlays (`travel`, `research`, `business`, `investing`) add a few
+topic files on top; each gets a row in the workspace's `AGENTS.md` file map.
+
+Rules that make the set work:
+
+- **Certainty levels.** Every stated fact is one of confirmed / decided /
+  tentative / unreviewed idea. Never let a brainstorm read like a booking.
+- **One home per fact.** Duplicated facts drift; the stale copy wins.
+- **Rationale travels with the decision.** A decision without its why gets
+  relitigated by the next session that doesn't remember the conversation.
+- **Staged is not accepted.** Nothing in `inbox/` is cited as fact until a
+  session has folded it into a state file.
+- **Archive, don't delete.** Git remembers everything anyway, but a human
+  browsing the folder should find superseded material in `archive/`.
+- **Re-verify anything that can go stale** (prices, dates, availability,
+  rules) before relying on it.
+
 ## Durability model
 
-`~/ai-workspaces` is a git repository with a private GitHub remote
-(yours). The repo — workspaces, skills, registry,
-scripts — is the single authoritative copy of the whole system. Everything
-else (provider symlinks, Gemini command files, the launchd autosync agent)
-is disposable machine wiring that `workspace.py bootstrap` regenerates.
+`~/ai-workspaces` is a git repository with a private remote (yours). The
+repo — workspaces, skills, registry, scripts — is the single authoritative
+copy of the whole system. Everything else (provider symlinks, Gemini command
+files, the optional autosync agent) is disposable machine wiring that
+`workspace.py bootstrap` regenerates.
 
-- Durable = committed AND pushed. `sync.py now` after meaningful work;
-  launchd autosync (every 30 min) is the safety net.
+- Durable = committed AND pushed. `sync.py now` at the end of a session;
+  optional autosync (launchd, every 30 min) is the safety net.
 - History/rollback/conflicts are plain git. A conflicted sync never loses
   work — it lands on a `conflict/<host>-<timestamp>` rescue branch.
 - Mobile access: the GitHub app/web UI works out of the box (the repo is
   plain markdown); richer phone capture can be layered on separately.
-- `media/<workspace>/` holds binary artifacts (photos, PDFs) uploaded from
-  the hub or dropped in locally. Committed like everything else (private
-  remote). sync.py warns >20MB per file and blocks >80MB — big video stays
-  outside the repo, referenced by path. `media` is a reserved name.
+- `media/<workspace>/` holds binary payloads written by `capture.py`.
+  sync.py warns >20MB per file and blocks >80MB — big video stays outside
+  the repo, referenced by path. `media` is a reserved name.
 - After each successful push, sync.py writes a rotated `git bundle` to
-  `~/.ai-workspace-backups/bundles/` (independent restore leg if the GitHub
-  remote is ever lost or corrupted).
+  `~/.ai-workspace-backups/bundles/` (independent restore leg if the remote
+  is ever lost or corrupted).
 
 ## Capturing context (inbox staging)
 
-Real-world context — emails, webpages, photos, files, links, quick
-thoughts — enters through `scripts/capture.py`, which writes one small
-markdown item per capture with provenance frontmatter (`captured`, `type`,
-`source`, `via`, `url`, `media`, `sha256`) and puts binary payloads in
+Real-world context — notes, links, files, findings from another session —
+enters through `scripts/capture.py`, which writes one small markdown item
+per capture with provenance frontmatter (`captured`, `type`, `source`,
+`via`, `url`, `media`, `sha256`) and puts binary payloads in
 `media/<workspace>/`:
 
 - `<workspace>/inbox/` — captures filed to a workspace. STAGED, not yet
   accepted: they become workspace state only when a session incorporates
   them into the state files (that rule lives in each AGENTS.md's "Inbox"
   section). Delete the item after incorporating; git history keeps it.
-- `capture/inbox/` — captures nobody has filed yet ("decide later" from the
-  phone, or `capture.py add` without `--ws`). Payloads: `media/_unsorted/`.
-  Triage moves items (and payloads) into a workspace.
+- `capture/inbox/` — captures nobody has filed yet (`capture.py add`
+  without `--ws`). Payloads: `media/_unsorted/`. Triage moves items (and
+  payloads) into a workspace.
 
 Entry points, all writing the same format:
 
-- **Phone share sheet** — an optional companion hub app (not included in
-  this repo) can act as an Android share target: share any
-  page/photo/file/text → tap a workspace (keyword-ranked) or "Inbox —
-  decide later". The server syncs right after; originals and URL
-  text-extracts are preserved at capture time.
-- **Mac CLI**: `python3 …/scripts/capture.py add --ws tokyo-trip
-  --text "…" | --url … | --file … [--sync]`; `--text -` reads stdin
-  (`pbpaste | capture.py add --text - --ws x`).
-- **Emails**: from any session with Gmail tools, snapshot the message into
-  an inbox item — subject as title, full relevant body as text, and put
-  `Message-ID`/thread id + sender + date in the body so the source is
-  recoverable; `source: email`.
+- **CLI**: `python3 …/scripts/capture.py add --ws lisbon-trip
+  --text "…" | --url … | --file … [--sync]`; `--text -` reads stdin.
+- **Another session**: a session working in workspace A that learns
+  something workspace B needs writes it to B's inbox rather than editing B
+  directly — the owning workspace stays accountable for its own files.
 - **URL captures** fetch a readable text extract at capture time (the page
   may die; the capture won't). The original URL stays in `url:`.
+- **Phone share sheet** — an optional companion app (not included here)
+  can call `capture_add()`; the format is the same.
 
 Whatever the entry point, nothing auto-edits state files — acceptance is
 always a session you can see.
 
-Privacy: the remote is private; access control is the GitHub account.
-Credentials, tokens, SSNs, and account numbers never go in workspace
-files (sync.py enforces a tripwire; the rule comes first). Original
-sensitive documents (tax returns, IDs) stay in their dedicated stores —
-workspaces hold summaries and pointers.
+Privacy: the remote is private; access control is your git host account.
+Credentials, tokens, SSNs, and account numbers never go in workspace files
+(sync.py enforces a tripwire; the rule comes first). Original sensitive
+documents stay in their dedicated stores — workspaces hold summaries and
+pointers.
 
 ## Filesystem layout
 
 ```
 ~/ai-workspaces/              # GIT REPO — the durable asset
 ├── README.md                 # system overview (renders on GitHub/mobile)
-├── RECOVERY.md               # clean-machine restore procedure
-├── MOBILE.md                 # optional: phone access notes
 ├── INDEX.md                  # generated — never hand-edit
 ├── registry.json             # source of truth for the index
 ├── skills/                   # canonical skills (real home)
 │   ├── new-ai-workspace/     # this skill: SKILL.md, scripts/, assets/
-│   └── <name>/SKILL.md       # each project skill
+│   └── <name>/SKILL.md       # each pointer skill
 ├── capture/inbox/            # unsorted captures ("decide later")
 ├── media/                    # binary payloads: media/<name>/, media/_unsorted/
 └── <name>/                   # one workspace per project
-    ├── AGENTS.md             # conventions; Codex also auto-reads this name
-    ├── STATUS.md             # current state + last-updated date
-    ├── CONTEXT.md            # goals, constraints, background
-    ├── DECISIONS.md          # append-only settled choices + rationale
-    ├── EXPERIMENTS.md        # pre-registered tests, resolved against reality
+    ├── AGENTS.md             # how the assistant works here; Codex auto-reads this name
+    ├── STATUS.md             # where things stand + last-updated date
+    ├── NEXT-ACTIONS.md       # now / waiting on / parked
+    ├── DECISIONS.md          # append-only, dated, with rationale
     ├── RESEARCH.md           # findings with sources + retrieval dates
-    ├── NEXT-ACTIONS.md       # prioritized todo
-    ├── <type-specific>.md    # e.g. ITINERARY.md, INVESTMENT-THESIS.md
+    ├── <type-specific>.md    # e.g. ITINERARY.md (travel type)
+    ├── references/           # source documents
     ├── inbox/                # staged captures, not yet accepted
     └── archive/              # superseded material; also holds SKILL.md
                               # backup when the workspace is archived
@@ -110,7 +132,7 @@ workspaces hold summaries and pointers.
 ~/.claude/skills/<name>       # relative symlink -> ../../.ai/skills/<name>
 ~/.agents/skills/<name>       # relative symlink -> ../../.ai/skills/<name>
 ~/.gemini/commands/<name>.toml  # generated Gemini CLI command
-~/Library/LaunchAgents/com.ai-workspaces.sync.plist  # autosync
+~/Library/LaunchAgents/com.ai-workspaces.sync.plist  # optional autosync
 ```
 
 Symlinks are relative so the tree survives a home-directory move or restore
@@ -130,8 +152,8 @@ regenerated by `workspace.py bootstrap` after a fresh clone.
   command at `~/.gemini/commands/<name>.toml` whose prompt points at the
   SKILL.md and workspace. Invoked as `/<name>`. Only generated when
   `~/.gemini` already exists on the machine.
-- **Anything else** (future tools, cloud agents, GitHub mobile edits): point
-  it at the repo — every workspace is self-describing via AGENTS.md.
+- **Anything else** (future tools, cloud agents, mobile edits): point it at
+  the repo — every workspace is self-describing via AGENTS.md.
 - Claude Code and Codex pick up new/removed skills at session start, not
   mid-session; Gemini reads command files per invocation.
 

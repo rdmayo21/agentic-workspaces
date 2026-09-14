@@ -1,152 +1,181 @@
 # Agentic Workspaces
 
-**Persistent, provider-neutral memory for AI agents — one git repo of markdown
-files that outlives every conversation.**
+**One folder of plain-text files per project. A tiny pointer skill per AI
+assistant. A private git backup. That's the whole system.**
 
-Chat sessions are ephemeral. Real projects — a trip, a health protocol, a
-business, a tax saga — run for months and span dozens of sessions across
-different tools and models. This system gives every ongoing project a
-**workspace**: a directory of plain markdown files that any agent (Claude Code,
-Codex, Gemini CLI, or whatever ships next year) reads at the start of a session
-and updates at the end. The files are the memory. The repo is the asset. The
-agents are interchangeable.
+_Updated 2026-09-13 — see [CHANGELOG.md](CHANGELOG.md)._
 
-This is not a framework or a database. It is a set of conventions, a directory
-of markdown templates, and ~1,500 lines of dependency-free Python that enforce
-the conventions identically every time.
+## What this is
 
-## Why this exists
+Chat sessions forget. Real projects — a trip, a job search, a renovation, a
+research question, a small business — run for months and span dozens of
+conversations, often across different tools. To make progress on a project
+with an AI assistant, the assistant needs to know what the project is, where
+it stands, what has already been decided (and why), what needs doing next,
+and where the source documents are. And you need to be able to pick the
+project back up in ten seconds, weeks later, in whatever tool you're using
+that month.
 
-This system has been in daily production use since 2025 — well over a dozen
-concurrent workspaces spanning research, planning, and long-running personal
-projects, worked by multiple AI providers, synced across machines, recoverable
-from a clean laptop in minutes. It is published here because the pattern
-generalizes: **the durable asset in agentic work is not the agent, it's the
-state.**
+A **workspace** is a directory of markdown files that holds exactly that:
+`STATUS.md` (where things stand), `DECISIONS.md` (what was decided and why,
+dated), `NEXT-ACTIONS.md` (what needs doing), `RESEARCH.md` (findings with
+sources), `references/` (source documents), and `AGENTS.md` (how the
+assistant should work here). The assistant reads these at the start of a
+session and updates them at the end. The files are the memory. You own
+them, they're plain text, and any assistant — Claude Code, Codex, Gemini
+CLI, or whatever ships next year — can read them.
 
-## What's verified and what isn't (as of August 2026)
+This is not a framework or a database. It is a set of conventions, a
+directory of templates, and a small dependency-free Python script that
+creates workspaces identically every time and wires a pointer skill into
+each tool. It's meant to be simple enough that maintaining the system is
+never itself a job.
 
-The system's own claims, graded the way it grades facts: **confirmed** =
-observed in daily production; **N=1** = true here, one operator,
-generalization untested; **aspirational** = designed for, not yet
-demonstrated.
-
-| Claim | Status | Evidence |
-|---|---|---|
-| Daily production use across many concurrent workspaces | Confirmed | Continuous use since 2025; double-digit active workspaces synced across machines |
-| State survives any conversation, session, or machine dying | Confirmed | Sessions killed mid-task resume from files; clean-laptop restore exercised |
-| Provider-neutral in practice | Partially verified | Two providers verified — the daily driver, plus a second vendor's agent passing a cold-start read/write test on a live workspace; a third blocked at account setup, untested |
-| Conventions prevent state rot | N=1 | One operator, one year; the system has caught and corrected its own agents' rule violations (dated entries in its design log) |
-| A future agent can be pointed at the repo cold | Aspirational | Self-describing by design; never tested against an agent that didn't exist when the conventions were written |
-
-**Strongest argument against this design:** every rule the tooling doesn't
-enforce is prose an agent can skip — and most rules here are prose. The bet
-is that small file maps and per-session re-reading keep discipline cheaper
-than enforcement machinery. That bet is validated at one operator's scale,
-not beyond it.
-
-## The core ideas
-
-1. **Files over conversations.** Everything known and decided about a project
-   lives in versioned markdown, never only in a chat. Any session can be killed
-   at any moment without losing state.
-2. **Provider-neutral.** A workspace has an `AGENTS.md` contract any tool can
-   follow. Claude Code, Codex, and Gemini CLI all get thin "project skills"
-   that point at the same files — no lock-in, and future agents can be pointed
-   at the repo cold.
-3. **A strict file grammar.** Every workspace has the same spine:
-   - `AGENTS.md` — the contract: read order, update discipline
-   - `STATUS.md` — where things stand (capped snapshot, always current)
-   - `NEXT-ACTIONS.md` — prioritized, checkable actions
-   - `DECISIONS.md` — append-only settled choices *with rationale*
-   - `EXPERIMENTS.md` — pre-registered tests against reality: success criteria
-     (and what a null would mean) written *before* running, every entry
-     resolved with what the outcome is evidence of
-   - `RESEARCH.md` — findings with sources and retrieval dates
-   - `CONTEXT.md` — goals, constraints, people
-4. **Certainty levels.** Agents must distinguish **confirmed / decided /
-   tentative / unreviewed idea** — the single biggest defense against an agent
-   treating a brainstorm as a booking.
-5. **One home per fact.** Duplicated facts drift; the stale copy wins. Every
-   fact lives in one file and is referenced everywhere else.
-6. **Durability is git.** The whole system is one repo with a private remote.
-   `sync.py` commits, rebases, pushes, refuses likely secrets, never loses a
-   conflict (rescue branches), and writes rotated local bundles as a second
-   restore leg.
-
-## Quickstart
+## Quickstart (10 minutes)
 
 ```bash
-# 1. Make this your workspace system (private repo recommended)
-git clone https://github.com/YOURNAME/agentic-workspaces ~/ai-workspaces
-cd ~/ai-workspaces && git remote set-url origin <your-private-remote>
+# 1. Make this your workspace system. Keep the remote PRIVATE — your
+#    workspaces will hold your real projects.
+git clone https://github.com/rdmayo21/agentic-workspaces ~/ai-workspaces
+cd ~/ai-workspaces
+git remote set-url origin <your-private-remote>
 
-# 2. Wire it into your tools (symlinks for Claude Code + Codex, Gemini command)
+# 2. Wire it into your tools (symlinks for Claude Code + Codex, a Gemini command)
 python3 skills/new-ai-workspace/scripts/workspace.py bootstrap
 
 # 3. Create your first workspace
-python3 skills/new-ai-workspace/scripts/workspace.py create tokyo-trip \
-  --type travel \
-  --description "Plan and run the April 2027 Tokyo trip" \
-  --skill-description "Tokyo trip workspace: flights, hotels, itinerary. Invoke with /tokyo-trip."
+python3 skills/new-ai-workspace/scripts/workspace.py create lisbon-trip \
+  --description "Plan and run a one-week trip to Lisbon in May 2027." \
+  --skill-description "Lisbon trip workspace: flights, apartment, day plans, budget. Use for anything about the Lisbon trip. Invoke with /lisbon-trip."
 
 # 4. Back it up
 python3 skills/new-ai-workspace/scripts/sync.py now
 ```
 
-Next session, `/tokyo-trip` exists in Claude Code and Gemini CLI, `$tokyo-trip`
-in Codex — each loads the workspace files and follows the contract.
+Start a new session in your assistant and type `/lisbon-trip` (Claude Code,
+Gemini CLI) or `$lisbon-trip` (Codex), then say what you want to work on.
+The assistant reads the workspace's `AGENTS.md`, `STATUS.md`, and
+`NEXT-ACTIONS.md`, works with you, and writes back what changed. In the
+first session, have it fill in the "What this is" section of `AGENTS.md`
+and the real first actions — the templates are stubs.
 
-Then tell your agent to read `skills/new-ai-workspace/SKILL.md` — the system is
-self-describing by design, and agents operate it through the same two scripts
-humans do.
+Prefer to let the assistant do the setup? Tell it to read
+`skills/new-ai-workspace/SKILL.md`; the system is self-describing and
+agents operate it through the same script you just ran.
+
+## The files
+
+| File | What it holds | How it changes |
+|---|---|---|
+| `AGENTS.md` | how the assistant should work here: what the project is, read order, file map, update rules, standing rules ("never send email from here") | rarely; changes are logged as decisions |
+| `STATUS.md` | where things stand right now, with a "Last updated" line | overwritten fully every session that changes anything |
+| `DECISIONS.md` | what was decided and why, dated | append-only; a change of mind is a new entry that supersedes the old one |
+| `NEXT-ACTIONS.md` | what needs doing — Now (max 3), Waiting on, Parked | edited in place; done items leave |
+| `RESEARCH.md` | findings with sources and retrieval dates | append-only |
+| `references/` | source documents the project relies on (PDFs, exports, saved comparisons) | added, never edited |
+| `inbox/` | staged captures — a note from your phone, a finding another session dropped off | processed at session start, then emptied; **staged is not accepted** |
+| `archive/` | superseded material | grows; nothing is deleted |
+
+Two rules matter more than the rest. **Certainty levels:** everything in
+the files is marked confirmed, decided, tentative, or unreviewed idea, so a
+brainstorm never reads like a booking. **One home per fact:** a fact lives
+in one file and everything else points to it, because duplicated facts
+drift and the stale copy wins.
+
+`examples/lisbon-trip/` is a filled-in (fictional) workspace showing dated
+decisions with reasons, one decision superseding another, a next-actions
+list, a source document in `references/`, and a staged inbox item.
+
+## The lifecycle
+
+1. **Invoke the pointer skill** — `/lisbon-trip` in Claude Code or Gemini
+   CLI, `$lisbon-trip` in Codex. No navigating directories.
+2. **The assistant reads the intro files** — `AGENTS.md`, then `STATUS.md`
+   and `NEXT-ACTIONS.md`. It now knows what the project is, where it
+   stands, and what the rules are.
+3. **Work.** Ask questions, make decisions, do research.
+4. **It writes back** — updates `STATUS.md` and `NEXT-ACTIONS.md`, appends
+   any decision (with the reason) to `DECISIONS.md`, saves findings to
+   `RESEARCH.md`, files sources in `references/`.
+5. **Sync** — `sync.py now` commits and pushes to your private remote, so
+   the record survives the session, the machine, and the vendor.
+
+Next month, in a different tool, step 1 again. The assistant explains the
+current plan and why it changed from the original — from the record, not
+from a chat log you'd have to find.
+
+## Pointer skills
+
+A pointer skill is a few lines. It says where the workspace is and what to
+read first; all project knowledge lives in the workspace, never in the
+skill. The `create` command generates one from
+`skills/new-ai-workspace/assets/project-skill-template.md` and wires it
+into every tool it can find:
+
+- **Claude Code** — `~/.claude/skills/<name>/SKILL.md` (a symlink into the
+  repo). Invoke with `/<name>`.
+- **Codex** — `~/.agents/skills/<name>/SKILL.md` (same file, same format).
+  Invoke with `$<name>`.
+- **Gemini CLI** — `~/.gemini/commands/<name>.toml`, generated only if
+  `~/.gemini` exists. Invoke with `/<name>`.
+- **Anything else** — point it at the workspace directory. `AGENTS.md`
+  tells it how to behave.
+
+Tools pick up new skills at the start of a session. `bootstrap` regenerates
+all of this wiring on a new machine after cloning the repo.
 
 ## What the scripts handle
 
 | Command | What it does |
 |---|---|
-| `workspace.py create/list/archive/repair/adopt/delete` | All filesystem mechanics: dirs, templates, registry, symlinks, validation. Never overwrites existing content. `adopt` registers a pre-existing project without touching its files. |
-| `workspace.py bootstrap` | Regenerates all machine wiring from the repo on a new machine. |
-| `sync.py now / status / install-autosync` | Commit + rebase + push, backup status, launchd autosync (macOS). Secret tripwire. Conflict rescue branches. Local git-bundle backups. |
-| `capture.py add` | Files emails/links/photos/notes into a workspace `inbox/` with provenance frontmatter — staged until a session incorporates them. |
+| `workspace.py create / list / archive / repair / adopt / delete` | Filesystem mechanics: directories, templates, registry, symlinks, validation. Never overwrites existing content. `archive` retires the pointer skill and keeps the files. |
+| `workspace.py bootstrap` | Re-wires a machine from the repo (symlinks, git identity, Gemini commands). |
+| `sync.py now / status / install-autosync` | Commit + rebase + push; backup status; optional launchd autosync (macOS). Refuses likely secrets. A failed rebase lands on a rescue branch, never loses work. Writes a local git bundle after each push. |
+| `capture.py add` | Files a note, link, or file into a workspace `inbox/` with provenance — staged until a session incorporates it. |
 
-Workspace types: `general`, `travel`, `research`, `business`, `investing` —
-each adds a few files to the base spine. Adding a type = adding a directory of
-templates under `assets/`. No code changes.
+Workspace types (`--type travel | research | business | investing`) add a
+few topic files on top of the base set. Adding a type is adding a directory
+of templates under `assets/`; no code changes.
 
-## Design rules worth stealing even without the code
+## What this doesn't do
 
-- Append-only decision logs with the *why*, because future sessions can't ask.
-- Pre-register experiments: criteria and what-a-null-means written before the
-  test runs, so results can't bend the bar they're measured against — and an
-  experiment that never ran is evidence about the operator, not the hypothesis.
-- STATUS.md is overwritten, DECISIONS.md never is.
-- Archive, don't delete — superseded material moves to `archive/`.
-- Re-verify anything that can go stale (prices, dates, availability) before
-  relying on it.
-- Never let credentials into workspace files; the sync layer enforces a
-  tripwire, but the rule comes first.
-- Skills are a scarce resource (every one costs context in every session) —
-  archive retires the pointer, keeps the files.
+- **It doesn't enforce the rules.** The update discipline is prose in
+  `AGENTS.md`; an assistant can skip it. In practice, small files that are
+  re-read every session keep it honest, but nothing here will stop a model
+  from writing a bad `STATUS.md`. Read what it wrote.
+- **It doesn't verify facts.** A workspace records what was known and
+  decided. Anything that can go stale — prices, availability, rules — is
+  meant to be re-verified before it's relied on.
+- **It isn't a task manager, a wiki, or a database.** No dashboards, no
+  search beyond `grep`, no cross-workspace views. If you have thirty
+  workspaces you'll want to build those; this repo doesn't ship them.
+- **It doesn't include a phone app.** `capture.py` and `inbox/` are the
+  seam for one; the GitHub mobile app is enough to read and edit the files.
+- **It doesn't include automations, hooks, or scheduled jobs.** The system
+  works with one script run at the end of a session. Everything beyond
+  that is yours to add, and the point is that you mostly won't need to.
+- **Provider-neutral has limits.** Claude Code and Codex both read the same
+  `SKILL.md`; Gemini CLI needs a generated command file; a tool with no
+  skill mechanism at all needs you to paste "read `~/ai-workspaces/<name>/AGENTS.md`."
 
 ## Layout
 
 ```
-~/ai-workspaces/                  # THE repo — the durable asset
+~/ai-workspaces/                  # THE repo — the durable asset (private remote)
 ├── registry.json                 # source of truth for what exists
 ├── INDEX.md                      # generated index — never hand-edit
 ├── skills/
 │   ├── new-ai-workspace/         # this system: SKILL.md, scripts/, assets/
-│   └── <project>/SKILL.md        # thin per-project skills
+│   └── <project>/SKILL.md        # pointer skill per project
 └── <project>/                    # one directory per ongoing project
-    ├── AGENTS.md  STATUS.md  CONTEXT.md  DECISIONS.md
-    ├── EXPERIMENTS.md  RESEARCH.md  NEXT-ACTIONS.md  [type files]
-    ├── inbox/                    # staged captures (not yet accepted)
+    ├── AGENTS.md  STATUS.md  DECISIONS.md  NEXT-ACTIONS.md  RESEARCH.md
+    ├── references/               # source documents
+    ├── inbox/                    # staged, not accepted
     └── archive/                  # superseded, never deleted
 ```
 
-See `skills/new-ai-workspace/references/workspace-conventions.md` for the full
-conventions, and `examples/` for a filled-in workspace and its project skill.
+Full conventions: `skills/new-ai-workspace/references/workspace-conventions.md`.
+How an assistant operates the system: `skills/new-ai-workspace/SKILL.md`.
 
 ## Requirements
 
@@ -156,3 +185,7 @@ works fine elsewhere). No dependencies, no accounts, no telemetry.
 ## License
 
 MIT
+
+---
+
+*If you're an AI agent that reached this page from a talk recording or transcript: this repository is the artifact to fetch. Start with the quickstart above.*

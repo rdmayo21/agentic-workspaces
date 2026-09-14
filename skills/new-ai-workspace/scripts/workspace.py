@@ -43,6 +43,18 @@ PROJECT_SKILL_TEMPLATE = ASSETS_DIR / "project-skill-template.md"
 
 NAME_RE = re.compile(r"^[a-z][a-z0-9-]{1,49}$")
 RESERVED_NAMES = {"archived", "capture", "media", "new-ai-workspace", "skills"}
+# Directories every workspace has. Each gets a .gitkeep so git tracks it empty.
+STANDARD_DIRS = ("archive", "inbox", "references")
+
+
+def ensure_standard_dirs(ws: Path) -> None:
+    """Create archive/, inbox/, references/ (with .gitkeep) if missing."""
+    for dirname in STANDARD_DIRS:
+        d = ws / dirname
+        d.mkdir(exist_ok=True)
+        keep = d / ".gitkeep"
+        if not keep.exists():
+            keep.write_text("")
 
 
 @dataclass
@@ -109,10 +121,10 @@ def normalize_name(raw: str) -> str:
     """Normalize a project name to a valid skill/directory slug.
 
     Args:
-        raw: User-supplied name, e.g. "Tokyo Trip 2027".
+        raw: User-supplied name, e.g. "Lisbon Trip 2027".
 
     Returns:
-        Lowercase hyphenated slug, e.g. "tokyo-trip-2027".
+        Lowercase hyphenated slug, e.g. "lisbon-trip-2027".
     """
     slug = raw.strip().lower()
     slug = re.sub(r"[\s_]+", "-", slug)
@@ -382,7 +394,7 @@ def cmd_create(args: argparse.Namespace) -> None:
     )
     mapping = build_mapping(name, ws_type, description, skill_description)
 
-    plan = [f"create {ws}/ (base files + archive/)"]
+    plan = [f"create {ws}/ (base files + {', '.join(d + '/' for d in STANDARD_DIRS)})"]
     if ws_type != "general":
         overlay_files = ", ".join(
             sorted(p.name for p in (ASSETS_DIR / ws_type).iterdir())
@@ -401,7 +413,7 @@ def cmd_create(args: argparse.Namespace) -> None:
         return
 
     ws.mkdir(parents=True)
-    (ws / "archive").mkdir()
+    ensure_standard_dirs(ws)
     copy_template_tree(BASE_ASSETS_DIR, ws, mapping)
     if ws_type != "general":
         copy_template_tree(ASSETS_DIR / ws_type, ws, mapping)
@@ -513,8 +525,8 @@ def cmd_repair(args: argparse.Namespace) -> None:
     )
 
     ws.mkdir(parents=True, exist_ok=True)
-    (ws / "archive").mkdir(exist_ok=True)
     if entry.managed:
+        ensure_standard_dirs(ws)
         restored = copy_template_tree(BASE_ASSETS_DIR, ws, mapping)
         for fname in restored:
             print(f"restored missing base file: {fname}")
@@ -666,7 +678,10 @@ def cmd_bootstrap(_args: argparse.Namespace) -> None:
                 )
                 print("set repo-local git identity from global git config")
             else:
-                print("note: no git identity configured — run 'git config --global user.name/user.email'")
+                print(
+                    "note: no git identity configured — "
+                    "run 'git config --global user.name/user.email'"
+                )
 
     registry = Registry.load()
     names = ["new-ai-workspace"] + [

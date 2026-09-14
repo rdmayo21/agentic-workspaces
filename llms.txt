@@ -1,21 +1,24 @@
 # Agentic Workspaces
 
-> Persistent, provider-neutral memory for AI agents: one git repo of markdown
-> files that outlives every conversation. Conventions, templates, and ~1,500
-> lines of dependency-free Python. The durable asset in agentic work is not
-> the agent, it's the state.
+> One folder of plain-text files per project, a tiny pointer skill per AI
+> assistant (Claude Code, Codex, Gemini CLI), a private git backup.
+> Conventions, templates, and a small dependency-free Python script. The
+> durable asset in agentic work is not the agent, it's the record.
 
 ## Docs
 
-- [README](https://github.com/rdmayo21/agentic-workspaces/blob/main/README.md): core ideas, quickstart, what's verified, design rules worth stealing
-- [Workspace conventions](https://github.com/rdmayo21/agentic-workspaces/blob/main/skills/new-ai-workspace/references/workspace-conventions.md): the full file grammar and update discipline
-- [System skill](https://github.com/rdmayo21/agentic-workspaces/blob/main/skills/new-ai-workspace/SKILL.md): how agents operate the system
-- [Examples](https://github.com/rdmayo21/agentic-workspaces/tree/main/examples): a filled-in workspace and its project skill
+Paths are relative to the repository root.
+
+- [README](README.md): what this is, 10-minute quickstart, file roles, lifecycle, pointer-skill setup, what it doesn't do
+- [Workspace conventions](skills/new-ai-workspace/references/workspace-conventions.md): the file set, update discipline, layout, discovery per tool
+- [System skill](skills/new-ai-workspace/SKILL.md): how agents operate the system
+- [Example](examples/): a filled-in fictional workspace and its pointer skill
+- [Changelog](CHANGELOG.md)
 
 ## Key ideas
 
-- Files over conversations: any session can be killed without losing state
-- Provider-neutral: Claude Code, Codex, and Gemini CLI read the same files
-- Append-only decision logs with rationale; pre-registered experiments
+- Files over conversations: any session can end without losing state
+- Provider-neutral: every assistant reads the same files; the skill is a pointer
+- Status = where things stand; decisions = what was decided and why, dated; next actions = what needs doing
 - Four certainty levels: confirmed / decided / tentative / unreviewed idea
-- One home per fact; archive, don't delete; re-verify anything stale
+- One home per fact; staged (inbox) is not accepted; archive, don't delete

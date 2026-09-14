@@ -1,6 +1,8 @@
-# {{title}} — Agent Guide
+# Lisbon Trip — Agent Guide
 
-{{description}}
+Plan and run a one-week trip to Lisbon, May 8–15, 2027, for two travelers
+(the user and their friend Sam). **Fictional example workspace** — every
+name, price, and booking here is invented.
 
 This directory is the persistent, provider-neutral workspace for this
 project. Any AI assistant working here (Claude Code, Codex, Gemini CLI, or
@@ -9,10 +11,11 @@ Conversations are ephemeral; these files are not.
 
 ## What this is
 
-(Two or three sentences, written at creation: what the project is, what
-"done" looks like, and anything that must never be done from here — e.g.
-"draft emails, never send them". Change this section only by decision, and
-log the change in `DECISIONS.md`.)
+A one-week Lisbon trip with one day trip (Sintra) and a possible two-night
+Porto extension. Done = flights, lodging, and day plans confirmed and a
+packing list in `references/` by 2027-04-30; afterwards the workspace is
+archived. Never book, cancel, or email anyone from this workspace —
+draft, and the user acts.
 
 ## Read order
 
@@ -31,7 +34,8 @@ Adding a file means adding a row.
 | `NEXT-ACTIONS.md` | what needs doing: now / waiting on / parked | edited in place; done items leave |
 | `DECISIONS.md` | what was decided and why, dated | append-only, never rewritten |
 | `RESEARCH.md` | findings with sources and retrieval dates | append-only |
-| `references/` | source documents this project relies on (PDFs, exports, notes) | added, never edited |
+| `references/` | source documents this project relies on | added, never edited |
+| `references/apartment-shortlist-2027-02.md` | the saved apartment comparison the lodging decisions cite | frozen |
 | `inbox/` | staged captures from the phone or another session — NOT accepted state | processed at session start, then emptied |
 | `archive/` | superseded material — move it here, don't delete it | grows |
 
@@ -49,8 +53,8 @@ After any meaningful work:
 3. Preserve source links and retrieval dates in `RESEARCH.md`.
 4. Never silently discard previous decisions or research — supersede them
    explicitly with a new entry.
-5. **One home per fact.** Every fact lives in exactly one file; everywhere
-   else points to it. Duplicated facts drift, and the stale copy wins.
+5. **One home per fact.** Booking facts (confirmation codes, dates, prices
+   paid) live in `STATUS.md`; everything else points there.
 6. **Keep sources.** A document that feeds a decision goes into
    `references/` at the moment of use and is linked from the entry citing
    it. A source that exists only in a conversation is already lost.
@@ -58,10 +62,10 @@ After any meaningful work:
    into the state files move to `archive/`; any new file gets its row in
    the file map above.
 
-Always distinguish four levels of certainty: **confirmed** (done, booked,
-executed), **decided** (settled, not yet executed), **tentative** (leading
-option), and **unreviewed idea**. Facts that can go stale (prices,
-availability, dates, rules) get re-verified before being relied on.
+Always distinguish four levels of certainty: **confirmed** (booked),
+**decided** (settled, not yet booked), **tentative** (leading option), and
+**unreviewed idea**. Prices, availability, opening hours, and train times
+go stale — re-verify before relying on them.
 
 If a search finds nothing, that is not proof of absence — say what was
 searched and how before "nothing found" becomes a fact.
