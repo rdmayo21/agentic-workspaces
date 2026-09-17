@@ -3,7 +3,7 @@
 **One folder of plain-text files per project. A tiny pointer skill per AI
 assistant. A private git backup. That's the whole system.**
 
-_Updated 2026-09-13 — see [CHANGELOG.md](CHANGELOG.md)._
+_Updated 2026-09-17 — see [CHANGELOG.md](CHANGELOG.md)._
 
 ## What this is
 

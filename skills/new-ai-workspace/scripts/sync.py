@@ -102,7 +102,7 @@ def current_branch() -> str:
 
 def dirty_paths() -> list[str]:
     """Uncommitted paths (staged, unstaged, or untracked)."""
-    out = git("status", "--porcelain").stdout
+    out = git("status", "--porcelain", "--untracked-files=all").stdout
     return [line[3:].strip() for line in out.splitlines() if line.strip()]
 
 

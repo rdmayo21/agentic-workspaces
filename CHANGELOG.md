@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-17
+
+Fixes from a clean-machine install test of the quickstart.
+
+- Generated pointer skills now quote the `description:` value. A description
+  containing `: ` (like the README's own example) was invalid YAML for strict
+  frontmatter parsers.
+- `sync.py now` reports the real number of files committed (new directories
+  were counted as one).
+
 ## 2026-09-13
 
 Brought the public starter kit in line with how the system is used day to

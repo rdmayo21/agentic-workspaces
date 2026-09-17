@@ -334,7 +334,9 @@ def build_mapping(
         "date": date.today().isoformat(),
         "type": ws_type,
         "description": description,
-        "skill_description": skill_description,
+        # JSON string == valid YAML double-quoted scalar; a bare value breaks
+        # strict frontmatter parsers when the description contains ": ".
+        "skill_description": json.dumps(skill_description, ensure_ascii=False),
         "workspace_path": str(workspace_dir(name)),
     }
 
