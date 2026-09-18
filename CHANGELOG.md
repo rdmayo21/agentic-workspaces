@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-09-18
+
+- README gained a "Questions and feedback" section; GitHub Discussions is on.
+
 ## 2026-09-17
 
 Fixes from a clean-machine install test of the quickstart.

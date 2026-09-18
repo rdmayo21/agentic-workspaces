@@ -182,6 +182,15 @@ How an assistant operates the system: `skills/new-ai-workspace/SKILL.md`.
 Python 3.11+, git, macOS or Linux (autosync install is macOS launchd; cron
 works fine elsewhere). No dependencies, no accounts, no telemetry.
 
+## Questions and feedback
+
+Tried it? Something broke, or something worked? Open a
+[Discussion](https://github.com/rdmayo21/agentic-workspaces/discussions), or
+an [Issue](https://github.com/rdmayo21/agentic-workspaces/issues) for bugs. I
+read everything there.
+
+For a private note, DM me on X: [@caveatemptorst1](https://x.com/caveatemptorst1).
+
 ## License
 
 MIT
