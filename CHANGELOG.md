@@ -3,8 +3,8 @@
 ## 2026-09-19
 
 - Added the handout from the hsv.ai talk (Sept 16, 2026) under `docs/talks/`,
-  served with GitHub Pages: slides as delivered, the quickstart, and answers
-  to the questions from the room.
+  served with GitHub Pages: the slides (PDF), written notes, the quickstart,
+  and answers to the questions from the room.
 
 ## 2026-09-18
 
