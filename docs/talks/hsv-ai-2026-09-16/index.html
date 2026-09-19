@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orchestrating Your Life with AI Agents: handout</title>
+<style>
+  :root { --bg:#fbfaf7; --fg:#1c1b19; --muted:#6b675f; --line:#e2ded5; --card:#ffffff; --accent:#1f5f8b; --code:#f1eee7; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#151412; --fg:#ece9e2; --muted:#a19c91; --line:#2e2c28; --card:#1d1c19; --accent:#7db8e0; --code:#262420; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 72px; }
+  h1 { font-size: 1.9rem; line-height:1.2; margin: 0 0 6px; }
+  h2 { font-size: 1.25rem; margin: 44px 0 12px; padding-top: 18px; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.02rem; margin: 0 0 6px; }
+  p { margin: 0 0 14px; }
+  .sub { color: var(--muted); margin-bottom: 26px; }
+  a { color: var(--accent); }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; background: var(--code); border-radius: 5px; }
+  code { padding: 1px 5px; }
+  pre { padding: 14px 16px; overflow-x: auto; line-height: 1.5; }
+  pre code { padding: 0; background: none; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 0 0 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  table { width:100%; border-collapse: collapse; margin: 0 0 14px; font-size: .95rem; }
+  th, td { text-align:left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin: 0 0 10px; }
+  summary { cursor: pointer; font-weight: 600; }
+  details[open] summary { margin-bottom: 8px; }
+  details p:last-child { margin-bottom: 2px; }
+  .note { color: var(--muted); font-size: .92rem; }
+  .big { font-size: 1.08rem; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Orchestrating Your Life with AI Agents</h1>
+<p class="sub">A systems approach, not a coding one. Handout for the hsv.ai talk, Sept 16, 2026. Daniel Mayo.</p>
+
+<p class="big">The short version: give each long-running project in your life one folder of plain text files that you own. Point your AI assistant at the folder. The assistant reads the files at the start of a session and updates them at the end. Assistants and models get swapped. The folders stay.</p>
+
+<p>Repo with templates and setup for Claude Code, Codex, and Gemini CLI (MIT):<br>
+<a href="https://github.com/rdmayo21/agentic-workspaces">github.com/rdmayo21/agentic-workspaces</a></p>
+
+<h2>The problem</h2>
+<p>A trip. A health question that lasts a year. A side project. The people you owe replies to. My test for any way of using AI on these, three months later: where does this stand, what did I decide, and why?</p>
+<p>The same four failures showed up in every tool I tried once a project outlived a conversation:</p>
+<div class="grid">
+  <div class="card"><h3>You re-explain</h3><p>Every session starts from the model's memory of you, not the project's record.</p></div>
+  <div class="card"><h3>You can only append</h3><p>Things change. The project folder just gets one more conversation.</p></div>
+  <div class="card"><h3>The record isn't yours</h3><p>It sits in a vendor's app, in a vendor's format, on a vendor's timeline.</p></div>
+  <div class="card"><h3>The "why" is gone</h3><p>You can find that you kept the hotel and changed the bus. Not why.</p></div>
+</div>
+<p>One more constraint: whatever fixes this can't become a job. Keeping the system running has to stay small.</p>
+
+<h2>How I got here</h2>
+<table>
+  <tr><th>Step</th><th>What it was</th><th>What broke</th></tr>
+  <tr><td>1. Projects in the chat apps</td><td>A folder of related conversations with some memory across them.</td><td>I couldn't update the project as things evolved. I just kept adding conversations.</td></tr>
+  <tr><td>2. A skill per area of life</td><td>Put the context in a skill file, call it when the topic comes up, let the assistant update it.</td><td>A skill is a standard operating procedure. It was never built to hold a record over months.</td></tr>
+  <tr><td>3. Now: the record in a folder, the skill a pointer</td><td>One folder of plain files per project. The skill shrinks to a few lines: go here, read these first.</td><td>Cost: a few minutes a session.</td></tr>
+</table>
+
+<h2>What a workspace is</h2>
+<table>
+  <tr><th>File</th><th>What it holds</th></tr>
+  <tr><td><code>AGENTS.md</code></td><td>How the assistant should work here</td></tr>
+  <tr><td><code>STATUS.md</code></td><td>Where things stand</td></tr>
+  <tr><td><code>DECISIONS.md</code></td><td>What was decided, and why, dated</td></tr>
+  <tr><td><code>NEXT-ACTIONS.md</code></td><td>What needs doing</td></tr>
+  <tr><td><code>RESEARCH.md</code></td><td>Findings, with sources and dates</td></tr>
+  <tr><td><code>references/</code></td><td>The actual source documents</td></tr>
+</table>
+<p>Three kinds of parts, and it helps to keep them straight:</p>
+<div class="grid">
+  <div class="card"><h3>Owned: keep for years</h3><p>The workspace folders and a private git backup, synced at the end of every session.</p></div>
+  <div class="card"><h3>Replaceable: pick per task</h3><p>The agentic harness (Claude Code, Codex, whatever is next), the model, the tools, and the ten-line pointer skill.</p></div>
+  <div class="card"><h3>You: the only constant</h3><p>Ask, decide, approve. A few minutes a day.</p></div>
+</div>
+<p>Getting in takes one command: <code>/trip</code> at the desk, the same thing from the phone. Once there are several workspaces, one more workspace reads all of them every week and ranks what needs me. Think of it as the assistant at the front desk, with the others as the specialists.</p>
+
+<h2>Try it: one workspace for one real project</h2>
+<pre><code># 1. Clone it as your workspace system. Keep YOUR remote private.
+git clone https://github.com/rdmayo21/agentic-workspaces ~/ai-workspaces
+cd ~/ai-workspaces
+git remote set-url origin &lt;your-private-remote&gt;
+
+# 2. Wire it into your tools
+python3 skills/new-ai-workspace/scripts/workspace.py bootstrap
+
+# 3. Create your first workspace
+python3 skills/new-ai-workspace/scripts/workspace.py create lisbon-trip \
+  --description "Plan and run a one-week trip to Lisbon in May 2027."
+
+# 4. Back it up
+python3 skills/new-ai-workspace/scripts/sync.py now</code></pre>
+<p>Or just tell your coding agent: "go to that repo and set it up for me." Then open a new session, type <code>/lisbon-trip</code> (Claude Code, Gemini CLI) or <code>$lisbon-trip</code> (Codex), and say what you want to work on. The README has the full quickstart.</p>
+<p><strong>Use it for a month. Then tell me what I'm missing.</strong></p>
+
+<h2>Questions from the room</h2>
+<p class="note">Paraphrased from the recording. A few of the better answers came from the audience, and they are marked.</p>
+
+<details><summary>1. Can I tell the AI at logoff to write a memory file, then reload it next time?</summary>
+<p>Yes, and that instinct is the whole idea. A workspace makes it a habit with a fixed shape: the assistant updates status, decisions, and next actions at the end of the session, and reads them at the start of the next one. You never manage a "memory file" by hand.</p></details>
+
+<details><summary>2. What if I keep my own file on a separate machine and paste it back in each time?</summary>
+<p>That works, and it is the fourth approach on the first slide: you own the context. The cost is the manual upkeep. The workspace version is the same ownership with the assistant doing the bookkeeping, inside files you can open and correct any time.</p></details>
+
+<details><summary>3. Does this involve MCP?</summary>
+<p>Only at the edges. MCP servers are tools the harness uses to reach email, a calendar, a drive, the web. They sit on the replaceable side. The workspace itself is plain files and needs no MCP at all.</p></details>
+
+<details><summary>4. You said a skill could hold years of records, then said it broke within months. Which is it?</summary>
+<p>Both. It worked at first, then broke as the record grew and changed. A skill is a procedure: a fixed way to do something, like checking email. A long project is a record that changes. Stuffing the record into the procedure file is what failed. Now the skill is about ten lines that point at the folder.</p></details>
+
+<details><summary>5. On the overview slide, are those boxes directories or commands?</summary>
+<p>Both. Each box is a folder on my machine and a slash command that points at it. One small setup skill creates the two together, so I never wire them by hand.</p></details>
+
+<details><summary>6. Which agentic harness do I need?</summary>
+<p>Any of them. I move between Claude Code and Codex depending on which is better that month. The repo sets up pointer skills for Claude Code, Codex, and Gemini CLI. Each has its own skill format, so the setup script writes one for each.</p></details>
+
+<details><summary>7. If I invoke a workspace mid-conversation, won't my earlier chat bleed into it?</summary>
+<p>It can. The habit: start a fresh session (<code>/clear</code> or a new chat) before you call a workspace, and keep throwaway chatting outside any workspace. From the audience: a skill can also run in its own subagent with its own context window and hand back only the result, which keeps the main context clean.</p></details>
+
+<details><summary>8. Is there a way to park a conversation, go talk about something else, and come back?</summary>
+<p>Not a true stack. <code>/compact</code> shrinks the conversation to its essentials so it costs less context, and a new session gives you a clean slate. The better answer is the workspace itself: if the state is in the files, you can drop the session and pick the project up later without losing anything.</p></details>
+
+<details><summary>9. Do you use the biggest model for everything?</summary>
+<p>No. I use the strongest model when creating a workspace or making a real decision. Reading a workspace and telling me where things stand does not need a top model.</p></details>
+
+<details><summary>10. Does this save tokens?</summary>
+<p>Probably not, and I don't mind. I use more tokens now and I finish projects I had put off for months or years. From the audience: one session that starts with the full record can replace twenty chats that each start from zero, so some of it balances out.</p></details>
+
+<details><summary>11. How do you use this from your phone?</summary>
+<p>You need to reach the harness running on your own machine, because that is where the skills and the folders are. Codex has a remote function in its mobile app. For Claude Code, I had Claude Code build me a small private web app that talks to the session on my desktop. The vendors' own mobile options were the weakest part of the stack when I gave this talk, and I expect that to change.</p></details>
+
+<details><summary>12. Can you create and use skills from the web or mobile apps?</summary>
+<p>From the audience: you can, through profile settings and a per-session toggle, and it takes a lot of clicks. On the desktop and CLI harnesses a skill is just a file in a folder, which is why everything here assumes those.</p></details>
+
+<details><summary>13. If I write my own MCP server, is it still interchangeable?</summary>
+<p>Yes. MCP is a shared standard, so the same server works across harnesses. Skills are the same story with small format differences per tool.</p></details>
+
+<details><summary>14. You said it made a phone call for you. What was that?</summary>
+<p>The trip workspace flagged that my hotel's front desk closes before my flight lands. I asked the assistant to call them. It had no way to, so it found an AI calling service, placed the call, and came back with the answer: they would leave a key. That was an experiment with a tool, approved by me, not something the workspace does on its own. The useful part was the workspace catching the problem weeks ahead.</p></details>
+
+<h2>Honest limits</h2>
+<p>It costs a few minutes a session to load and update the record. It has broken on me in several ways, and the fixes went back into the templates. The assistant can still record a discussed option as if it were a decision, which is why <code>DECISIONS.md</code> exists as a file you can read and correct. And nothing updates itself from the world: if your flight moves, you have to tell it, unless you have given it a tool that can see the change.</p>
+
+<h2>Feedback</h2>
+<p>Questions, bug reports, and "this didn't work for me" are all welcome in <a href="https://github.com/rdmayo21/agentic-workspaces/discussions">GitHub Discussions</a> on the repo. For a private note, DM me on X: <a href="https://x.com/caveatemptorst1">@caveatemptorst1</a>.</p>
+<p class="note">Thanks to hsv.ai and CohesionForce for hosting, and to everyone who asked questions.</p>
+
+</main>
+</body>
+</html>
