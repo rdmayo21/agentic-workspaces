@@ -3,7 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orchestrating Your Life with AI Agents: handout</title>
+<title>Orchestrating Your Life with AI Agents: talk video, slides, and notes</title>
+<meta name="description" content="How I run the ongoing projects in my life with AI agents like Claude Code and Codex: one folder of plain-text markdown files per project, portable across any AI tool. Talk at hsv.ai, Huntsville, AL, Sept 16, 2026.">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "VideoObject",
+ "name": "Orchestrating Your Life with AI Agents: Plain-Text Workspaces for Claude Code & Codex",
+ "description": "How I run the ongoing projects in my life with AI agents like Claude Code and Codex: one folder of plain-text markdown files per project, portable across any AI tool. Talk at hsv.ai, Huntsville, AL, Sept 16, 2026.",
+ "thumbnailUrl": "https://i.ytimg.com/vi/UTVBrQRN2Vk/maxresdefault.jpg",
+ "uploadDate": "2026-09-30T12:30:00-05:00",
+ "duration": "PT57M3S",
+ "contentUrl": "https://www.youtube.com/watch?v=UTVBrQRN2Vk",
+ "embedUrl": "https://www.youtube.com/embed/UTVBrQRN2Vk",
+ "author": {
+  "@type": "Person",
+  "name": "Daniel Mayo"
+ },
+ "hasPart": [
+  {
+   "@type": "Clip",
+   "name": "How I use AI day to day",
+   "startOffset": 0,
+   "endOffset": 190,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=0s"
+  },
+  {
+   "@type": "Clip",
+   "name": "Four ways to use AI for ongoing projects",
+   "startOffset": 190,
+   "endOffset": 305,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=190s"
+  },
+  {
+   "@type": "Clip",
+   "name": "Where chat apps break when a project outlives a conversation",
+   "startOffset": 305,
+   "endOffset": 684,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=305s"
+  },
+  {
+   "@type": "Clip",
+   "name": "How I got here: coding agents for everyday life",
+   "startOffset": 684,
+   "endOffset": 1102,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=684s"
+  },
+  {
+   "@type": "Clip",
+   "name": "The view from 30,000 feet: one folder of workspaces",
+   "startOffset": 1102,
+   "endOffset": 1449,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=1102s"
+  },
+  {
+   "@type": "Clip",
+   "name": "Who does the work, where the record lives, what can be replaced",
+   "startOffset": 1449,
+   "endOffset": 2238,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=1449s"
+  },
+  {
+   "@type": "Clip",
+   "name": "One real workspace, one month: the trip loop",
+   "startOffset": 2238,
+   "endOffset": 3044,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=2238s"
+  },
+  {
+   "@type": "Clip",
+   "name": "Try it: one workspace for one real project",
+   "startOffset": 3044,
+   "endOffset": 3128,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=3044s"
+  },
+  {
+   "@type": "Clip",
+   "name": "Q&A",
+   "startOffset": 3128,
+   "endOffset": 3423,
+   "url": "https://www.youtube.com/watch?v=UTVBrQRN2Vk&t=3128s"
+  }
+ ]
+}
+</script>
 <style>
   :root { --bg:#fbfaf7; --fg:#1c1b19; --muted:#6b675f; --line:#e2ded5; --card:#ffffff; --accent:#1f5f8b; --code:#f1eee7; }
   @media (prefers-color-scheme: dark) {
@@ -33,6 +116,11 @@
   details p:last-child { margin-bottom: 2px; }
   .note { color: var(--muted); font-size: .92rem; }
   .big { font-size: 1.08rem; }
+  .video { position: relative; aspect-ratio: 16 / 9; margin: 0 0 12px; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 10px; }
+  ol.chapters { margin: 0 0 22px; padding-left: 0; list-style: none; font-size: .95rem; }
+  ol.chapters li { margin: 2px 0; }
+  ol.chapters a { font-variant-numeric: tabular-nums; display: inline-block; min-width: 3.2em; }
 </style>
 </head>
 <body>
@@ -40,7 +128,19 @@
 
 <h1>Orchestrating Your Life with AI Agents</h1>
 <p class="sub">A systems approach, not a coding one. hsv.ai talk, Sept 16, 2026. Daniel Mayo.</p>
-<p class="sub"><a href="https://youtu.be/UTVBrQRN2Vk">Watch the talk (video, 57 min)</a>.</p>
+<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/UTVBrQRN2Vk" title="Orchestrating Your Life with AI Agents (talk video)" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+<p class="sub"><a href="https://youtu.be/UTVBrQRN2Vk">Watch on YouTube (57 min)</a>. Chapters:</p>
+<ol class="chapters">
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=0s">0:00</a> How I use AI day to day</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=190s">3:10</a> Four ways to use AI for ongoing projects</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=305s">5:05</a> Where chat apps break when a project outlives a conversation</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=684s">11:24</a> How I got here: coding agents for everyday life</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=1102s">18:22</a> The view from 30,000 feet: one folder of workspaces</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=1449s">24:09</a> Who does the work, where the record lives, what can be replaced</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=2238s">37:18</a> One real workspace, one month: the trip loop</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=3044s">50:44</a> Try it: one workspace for one real project</li>
+<li><a href="https://www.youtube.com/watch?v=UTVBrQRN2Vk&amp;t=3128s">52:08</a> Q&A</li>
+</ol>
 <p class="sub"><a href="slides.pdf">The slides I showed (PDF)</a>, all eight, including the live example from a real workspace (slide 7). Everything below is written notes from the talk and the questions from the room, not the slides themselves.</p>
 
 <p class="big">The short version: give each long-running project in your life one folder of plain text files that you own. Point your AI assistant at the folder. The assistant reads the files at the start of a session and updates them at the end. Assistants and models get swapped. The folders stay.</p>
