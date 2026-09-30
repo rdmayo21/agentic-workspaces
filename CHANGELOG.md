@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-30
+
+- The hsv.ai talk video is up: https://youtu.be/UTVBrQRN2Vk. Linked from the README and the talk
+  page. The slides PDF now includes slide 7 (all eight).
+
 ## 2026-09-19
 
 - Added the handout from the hsv.ai talk (Sept 16, 2026) under `docs/talks/`,

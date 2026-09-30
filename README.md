@@ -3,7 +3,10 @@
 **One folder of plain-text files per project. A tiny pointer skill per AI
 assistant. A private git backup. That's the whole system.**
 
-_Updated 2026-09-17 — see [CHANGELOG.md](CHANGELOG.md)._
+_Updated 2026-09-30 — see [CHANGELOG.md](CHANGELOG.md)._
+
+Talk: [video](https://youtu.be/UTVBrQRN2Vk) · [slides and notes](https://rdmayo21.github.io/agentic-workspaces/talks/hsv-ai-2026-09-16/)
+(hsv.ai, Huntsville, Sept 16, 2026).
 
 ## What this is
 
