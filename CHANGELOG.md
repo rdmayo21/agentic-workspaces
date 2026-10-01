@@ -2,6 +2,14 @@
 
 ## 2026-09-30
 
+- Packaged the public manager as the `agentic-workspaces` 1.0.0 skills-only
+  OpenAI plugin: portable manifest, repo marketplace, icons, privacy policy,
+  and upload ZIP builder. GitHub installation is independent of OpenAI's
+  directory review and publication.
+- Added plugin setup that initializes a user's own local Git store without
+  a remote and preserves existing workspace systems; verified setup,
+  project creation, inbox capture, local sync, and archive in an isolated home.
+
 - The hsv.ai talk video is up: https://youtu.be/UTVBrQRN2Vk. Linked from the README and the talk
   page. The slides PDF now includes slide 7 (all eight).
 

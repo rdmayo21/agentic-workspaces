@@ -36,6 +36,20 @@ never itself a job.
 
 ## Quickstart (10 minutes)
 
+**OpenAI plugin installation:** add this repository as a Codex marketplace,
+install the plugin, then start a new chat:
+
+```bash
+codex plugin marketplace add rdmayo21/agentic-workspaces
+codex plugin add agentic-workspaces@agentic-workspaces
+```
+
+Ask “Set up persistent workspaces for my ongoing projects.” The plugin
+initializes your own local store without cloning a public backup remote.
+Requires Python 3.11+, Git, and persistent macOS or Linux filesystem access.
+See [plugin setup and public-directory submission](docs/PLUGIN.md) and
+[privacy policy](PRIVACY.md). You can also use the manual quickstart below.
+
 ```bash
 # 1. Make this your workspace system. Keep the remote PRIVATE — your
 #    workspaces will hold your real projects.

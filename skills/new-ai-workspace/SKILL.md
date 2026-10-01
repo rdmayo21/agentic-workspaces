@@ -1,9 +1,47 @@
 ---
 name: new-ai-workspace
-description: Bootstrap a persistent, provider-neutral AI workspace (~/ai-workspaces/<name>/) plus a thin pointer skill available in Claude Code, Codex, and Gemini CLI. USE THIS SKILL whenever the user wants to turn an idea into an ongoing multi-session project, even if they never say "workspace" — "create a workspace", "new workspace for X", "set up a persistent project for X", "make this an ongoing project", "turn this conversation into a project", "track this across sessions", "/new-ai-workspace" — and for managing the workspace system itself: "list my workspaces", "which workspaces are active", "archive the X workspace", "delete the X workspace", "repair/fix the X workspace", a broken workspace skill or symlink in Claude Code or Codex, or anything touching ~/ai-workspaces, its INDEX.md, or registry.json. ALSO USE for workspace durability and sync: "is everything backed up", "sync my workspaces", "workspace backup status", "restore my workspaces on this machine", "set up my workspaces on a new computer", conflicts between devices, or rollback of a workspace change. ALL workspace mechanics go through scripts/workspace.py and scripts/sync.py — never hand-create workspace dirs, symlinks, or git plumbing.
+description: "Create and maintain persistent Markdown workspaces for ongoing projects. Use when the user asks to set up, resume, list, archive, repair, capture notes into, or back up their workspace system. Includes project pointer skills for Codex, Claude Code, and Gemini CLI. Requires Python 3.11+, Git, and persistent filesystem access on macOS or Linux."
 ---
 
 # New AI Workspace (bootstrap)
+
+## First use from an installed plugin
+
+Act within the user's requested project and the host's permissions. Installing
+the plugin alone does not authorize setup, remote pushes, deletion, or changes
+to unrelated agent configuration. Keep credentials, government identifiers,
+payment-card data, and protected health information out of workspace files.
+
+This workflow needs Python 3.11+, Git, and a persistent macOS or Linux
+filesystem. If those are unavailable, explain the requirement and provide
+the templates as a starting point; do not claim durable setup or backup.
+On a temporary cloud computer, establish persistent storage or an explicitly
+authorized private backup before promising cross-session continuity.
+
+If `~/ai-workspaces/skills/new-ai-workspace/SKILL.md` already exists, read it
+and the store's root `AGENTS.md` if present. Its conventions and scripts
+govern that store. Do not replace an existing implementation with this
+package or run bootstrap just because a plugin was installed.
+
+For a new store, when the user requests setup, run `scripts/setup.py` relative
+to this installed skill's directory. It copies these bundled resources into
+`~/ai-workspaces/`, initializes local Git, and uses `workspace.py bootstrap`
+to wire pointer skills for the installed agents. It never overwrites an
+existing store, downloads anything, adds a remote, or pushes data. Use the
+copied scripts afterward, so plugin updates or uninstall do not remove the
+user's workspace system. Continue with the purpose and constraints below
+before creating the first project.
+
+Before backup, have the user choose a **private** Git remote and authorize
+the transfer. Never use this public starter-kit repository as their backup
+remote. With no remote, `sync.py now` commits locally only; describe that as
+a local checkpoint, not an off-device backup. Configure autosync only when
+the user requests it. Uninstalling the plugin leaves workspace data intact.
+
+Capture notes with `scripts/capture.py add --ws <name> --text <note>`.
+When resuming an existing project, read its `AGENTS.md`, `STATUS.md`, and
+`NEXT-ACTIONS.md`, then follow its update discipline. Do not create a second
+workspace for the same project.
 
 Turns an ongoing idea into four things at once:
 
