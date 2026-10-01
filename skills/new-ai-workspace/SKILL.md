@@ -1,6 +1,6 @@
 ---
 name: new-ai-workspace
-description: "Create and maintain persistent Markdown workspaces for ongoing projects. Use when the user asks to set up, resume, list, archive, repair, capture notes into, or back up their workspace system. Includes project pointer skills for Codex, Claude Code, and Gemini CLI. Requires Python 3.11+, Git, and persistent filesystem access on macOS or Linux."
+description: "Create and maintain persistent Markdown workspaces for ongoing projects. Use when the user asks to set up, resume, list, archive, repair, capture notes into, or back up their workspace system. Includes project pointer skills for supported coding agents. Requires Python 3.11+, Git, and persistent filesystem access on macOS or Linux."
 ---
 
 # New AI Workspace (bootstrap)

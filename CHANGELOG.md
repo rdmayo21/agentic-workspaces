@@ -2,6 +2,9 @@
 
 ## 2026-09-30
 
+- Plugin 1.0.1 uses platform-neutral listing and skill descriptions for
+  public-directory compatibility.
+
 - Packaged the public manager as the `agentic-workspaces` 1.0.0 skills-only
   OpenAI plugin: portable manifest, repo marketplace, icons, privacy policy,
   and upload ZIP builder. GitHub installation is independent of OpenAI's

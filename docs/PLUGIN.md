@@ -35,7 +35,7 @@ python3 -m unittest discover -s tests -v
 python3 scripts/package_plugin.py
 ```
 
-The builder writes `dist/agentic-workspaces-1.0.0.zip` using an explicit
+The builder writes `dist/agentic-workspaces-<version>.zip` using an explicit
 allowlist: the root manifest, icons, license, privacy policy, README, and
 workspace skill resources. It excludes Git history, local stores, tests,
 site/talk files, and build caches. `plugin.json` is the metadata source;

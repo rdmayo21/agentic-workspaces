@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "agentic-workspaces",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create and maintain persistent project workspaces in Markdown, with decisions, next actions, pointer skills, and optional private Git backups.",
   "author": {
     "name": "Daniel Mayo",
@@ -10,16 +10,28 @@
   "homepage": "https://github.com/rdmayo21/agentic-workspaces",
   "repository": "https://github.com/rdmayo21/agentic-workspaces",
   "license": "MIT",
-  "keywords": ["workspaces", "project-memory", "markdown", "decisions", "git"],
+  "keywords": [
+    "workspaces",
+    "project-memory",
+    "markdown",
+    "decisions",
+    "git"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "Agentic Workspaces",
         "shortDescription": "Project memory you own",
-        "longDescription": "Turn an ongoing project into a folder of Markdown files that records its current status, decisions and reasons, research, and next actions. Resume work by reading the record, then save verified outcomes for the next session. Includes workspace templates, inbox capture, pointer skills for Codex, Claude Code, and Gemini CLI, and optional Git backups to a private remote you control. Requires Python 3.11+, Git, and a macOS or Linux environment with persistent filesystem access. Installing the plugin alone does not create a workspace store or enable backups. No hosted service, account connection, or telemetry is included; workspace data stays in your chosen execution environment unless you authorize a backup or another transfer. An ephemeral cloud computer is not a durable store.",
+        "longDescription": "Turn an ongoing project into a folder of Markdown files that records its current status, decisions and reasons, research, and next actions. Resume work by reading the record, then save verified outcomes for the next session. Includes workspace templates, inbox capture, pointer skills for supported coding agents, and optional Git backups to a private remote you control. Requires Python 3.11+, Git, and a macOS or Linux environment with persistent filesystem access. Installing the plugin alone does not create a workspace store or enable backups. No hosted service, account connection, or telemetry is included; workspace data stays in your chosen execution environment unless you authorize a backup or another transfer. An ephemeral cloud computer is not a durable store.",
         "developerName": "Daniel Mayo",
         "category": "Productivity",
-        "capabilities": ["Create workspaces", "Resume projects", "Record decisions", "Capture notes", "Back up with Git"],
+        "capabilities": [
+          "Create workspaces",
+          "Resume projects",
+          "Record decisions",
+          "Capture notes",
+          "Back up with Git"
+        ],
         "websiteURL": "https://github.com/rdmayo21/agentic-workspaces",
         "supportURL": "https://github.com/rdmayo21/agentic-workspaces/issues",
         "privacyPolicyURL": "https://github.com/rdmayo21/agentic-workspaces/blob/main/PRIVACY.md",
@@ -38,7 +50,7 @@
       },
       "onboardingSkill": "./skills/new-ai-workspace/SKILL.md",
       "publication": {
-        "release_notes": "Initial skills-only release: persistent Markdown workspaces, non-overwriting local setup, project pointer skills, inbox capture, and optional private Git sync."
+        "release_notes": "Use platform-neutral listing text; retain the initial persistent workspace workflow and non-overwriting local setup."
       }
     }
   }
